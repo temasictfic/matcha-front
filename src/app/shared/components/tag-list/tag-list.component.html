@@ -1,0 +1,30 @@
+<div class="tag-list">
+  <div class="tags-container">
+    <span *ngFor="let tag of tags" class="{{tagClass}}">
+      #{{tag.name}}
+      <button *ngIf="editable" type="button" class="btn-close btn-close-sm" 
+          (click)="onRemoveTag(tag.id)" aria-label="Remove tag"></button>
+    </span>
+    
+    <span *ngIf="tags.length === 0" class="text-muted small">
+      No tags added yet.
+    </span>
+  </div>
+  
+  <div *ngIf="editable" class="mt-2">
+    <div class="input-group input-group-sm">
+      <input type="text" class="form-control" [formControl]="newTagControl"
+          placeholder="Add a tag..." (keyup)="onKeyUp($event)">
+      <button class="btn btn-primary" type="button" (click)="addNewTag()"
+          [disabled]="tags.length >= maxTags || !newTagControl.value?.trim()">
+        Add
+      </button>
+    </div>
+    <small class="text-muted" *ngIf="tags.length >= maxTags">
+      Maximum number of tags reached ({{maxTags}}).
+    </small>
+    <small class="text-muted" *ngIf="tags.length < maxTags">
+      {{tags.length}}/{{maxTags}} tags added.
+    </small>
+  </div>
+</div>

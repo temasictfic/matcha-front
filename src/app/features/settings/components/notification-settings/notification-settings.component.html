@@ -1,0 +1,64 @@
+<div class="card-body">
+    <h4 class="card-title mb-4">Notification Settings</h4>
+    
+    <!-- Error message -->
+    <app-alert *ngIf="error" [type]="'danger'" [message]="error" [dismissible]="true" (dismissed)="error = ''"></app-alert>
+    
+    <!-- Success message -->
+    <app-alert *ngIf="success" [type]="'success'" [message]="success" [dismissible]="true" (dismissed)="success = ''"></app-alert>
+    
+    <!-- Notification settings form -->
+    <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()">
+      <h5 class="mb-3">Email Notifications</h5>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="email_likes" formControlName="email_likes">
+        <label class="form-check-label" for="email_likes">Send email when someone likes my profile</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="email_matches" formControlName="email_matches">
+        <label class="form-check-label" for="email_matches">Send email when I get a new match</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="email_messages" formControlName="email_messages">
+        <label class="form-check-label" for="email_messages">Send email when I receive a new message</label>
+      </div>
+      
+      <hr>
+      
+      <h5 class="mb-3">In-App Notifications</h5>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="push_likes" formControlName="push_likes">
+        <label class="form-check-label" for="push_likes">Show notification when someone likes my profile</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="push_matches" formControlName="push_matches">
+        <label class="form-check-label" for="push_matches">Show notification when I get a new match</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="push_messages" formControlName="push_messages">
+        <label class="form-check-label" for="push_messages">Show notification when I receive a new message</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="push_visits" formControlName="push_visits">
+        <label class="form-check-label" for="push_visits">Show notification when someone visits my profile</label>
+      </div>
+      
+      <div class="d-grid mt-4">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Save Settings
+        </button>
+      </div>
+    </form>
+  </div>

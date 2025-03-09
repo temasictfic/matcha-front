@@ -1,0 +1,65 @@
+<div class="matches-container">
+    <div class="matches-header mb-4">
+      <div class="container">
+        <h2>Your Matches</h2>
+        <p class="text-muted">People you've connected with</p>
+      </div>
+    </div>
+    
+    <div class="container">
+      <!-- Loading spinner -->
+      <app-loading-spinner *ngIf="loading" [message]="'Loading matches...'"></app-loading-spinner>
+      
+      <!-- Error message -->
+      <app-alert *ngIf="error" [type]="'danger'" [message]="error"></app-alert>
+      
+      <!-- No matches message -->
+      <div *ngIf="!loading && matches.length === 0" class="text-center py-5">
+        <div class="empty-state">
+          <i class="fas fa-heart-broken mb-3"></i>
+          <h3>No Matches Yet</h3>
+          <p class="text-muted">When you and someone else like each other, you'll see them here.</p>
+          <a routerLink="/browse" class="btn btn-primary mt-3">Find Matches</a>
+        </div>
+      </div>
+      
+      <!-- Matches list -->
+      <div *ngIf="!loading && matches.length > 0" class="row g-4">
+        <div *ngFor="let match of matches" class="col-lg-3 col-md-6">
+          <div class="match-card card h-100">
+            <!-- Profile picture -->
+            <div class="match-image-container">
+              <img [src]="match.pictures[0].file_path || 'images/sc.jpeg'" 
+                  [alt]="match.username" class="match-image card-img-top">
+              
+              <!-- Online status -->
+              <div class="online-status" [ngClass]="{'online': match.is_online}">
+                {{ match.is_online ? 'Online' : (match.last_online | timeAgo) }}
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <!-- Name and username -->
+              <h5 class="card-title">{{ match.first_name }} {{ match.last_name }}</h5>
+              <p class="text-muted mb-3">{{ match.username }}</p> <!-- @ matchdan önceki parantezlerden önce -->
+              
+              <!-- Action buttons -->
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary" (click)="startChat(match.id)">
+                  <i class="fas fa-comment me-2"></i> Message
+                </button>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-secondary flex-grow-1" (click)="viewProfile(match.id)">
+                    View Profile
+                  </button>
+                  <button class="btn btn-outline-danger" (click)="unmatch(match.id)">
+                    Unmatch
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

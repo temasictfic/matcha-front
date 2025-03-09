@@ -1,0 +1,66 @@
+<div class="settings-container">
+    <div class="settings-header mb-4">
+      <div class="container">
+        <h2>Settings</h2>
+        <p class="text-muted">Manage your account and preferences</p>
+      </div>
+    </div>
+    
+    <div class="container">
+      <!-- Loading spinner -->
+      <app-loading-spinner *ngIf="loading" [message]="'Loading settings...'"></app-loading-spinner>
+      
+      <!-- Error message -->
+      <app-alert *ngIf="error" [type]="'danger'" [message]="error"></app-alert>
+      
+      <!-- Settings content -->
+      <div *ngIf="!loading && user" class="row">
+        <div class="col-lg-3 mb-4">
+          <!-- Settings navigation -->
+          <div class="card settings-nav">
+            <div class="list-group list-group-flush">
+              <button 
+                class="list-group-item list-group-item-action" 
+                [class.active]="activeTab === 'account'"
+                (click)="setActiveTab('account')">
+                <i class="fas fa-user me-2"></i> Account Settings
+              </button>
+              
+              <button 
+                class="list-group-item list-group-item-action" 
+                [class.active]="activeTab === 'password'"
+                (click)="setActiveTab('password')">
+                <i class="fas fa-lock me-2"></i> Change Password
+              </button>
+              
+              <button 
+                class="list-group-item list-group-item-action" 
+                [class.active]="activeTab === 'notifications'"
+                (click)="setActiveTab('notifications')">
+                <i class="fas fa-bell me-2"></i> Notification Settings
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-9">
+          <div class="card settings-content">
+            <!-- Account settings tab -->
+            <div *ngIf="activeTab === 'account'">
+              <app-account-settings [user]="user"></app-account-settings>
+            </div>
+            
+            <!-- Password settings tab -->
+            <div *ngIf="activeTab === 'password'">
+              <app-password-settings></app-password-settings>
+            </div>
+            
+            <!-- Notification settings tab -->
+            <div *ngIf="activeTab === 'notifications'">
+              <app-notification-settings></app-notification-settings>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

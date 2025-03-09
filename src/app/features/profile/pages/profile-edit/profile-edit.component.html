@@ -1,0 +1,134 @@
+<div class="profile-edit-container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Edit Profile</h2>
+          <button class="btn btn-outline-secondary" (click)="cancel()">Back to Profile</button>
+        </div>
+        
+        <!-- Loading spinner -->
+        <app-loading-spinner *ngIf="loading" [message]="'Loading profile...'"></app-loading-spinner>
+        
+        <!-- Error message -->
+        <app-alert *ngIf="error" [type]="'danger'" [message]="error" [dismissible]="true" (dismissed)="error = ''"></app-alert>
+        
+        <!-- Success message -->
+        <app-alert *ngIf="success" [type]="'success'" [message]="success" [dismissible]="true" (dismissed)="success = ''"></app-alert>
+        
+        <!-- Profile edit form -->
+        <div *ngIf="!loading" class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="card-title mb-4">Basic Information</h3>
+            
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+              <!-- Gender -->
+              <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select id="gender" formControlName="gender" class="form-select" 
+                    [ngClass]="{ 'is-invalid': f['gender'].errors && f['gender'].touched }">
+                  <option [ngValue]="null" disabled>Select your gender</option>
+                  <option *ngFor="let option of genderOptions" [value]="option">
+                    {{ option | titlecase }}
+                  </option>
+                </select>
+                <div *ngIf="f['gender'].errors && f['gender'].touched" class="invalid-feedback">
+                  <div *ngIf="f['gender'].errors['required']">Gender is required</div>
+                </div>
+              </div>
+              
+              <!-- Sexual Preference -->
+              <div class="mb-3">
+                <label for="sexual_preference" class="form-label">Sexual Preference</label>
+                <select id="sexual_preference" formControlName="sexual_preference" class="form-select"
+                    [ngClass]="{ 'is-invalid': f['sexual_preference'].errors && f['sexual_preference'].touched }">
+                  <option [ngValue]="null" disabled>Select your sexual preference</option>
+                  <option *ngFor="let option of sexualPreferenceOptions" [value]="option">
+                    {{ option | titlecase }}
+                  </option>
+                </select>
+                <div *ngIf="f['sexual_preference'].errors && f['sexual_preference'].touched" class="invalid-feedback">
+                  <div *ngIf="f['sexual_preference'].errors['required']">Sexual preference is required</div>
+                </div>
+              </div>
+              
+              <!-- Biography -->
+              <div class="mb-3">
+                <label for="biography" class="form-label">About Me</label>
+                <textarea id="biography" formControlName="biography" class="form-control" rows="5"
+                    [ngClass]="{ 'is-invalid': f['biography'].errors && f['biography'].touched }"
+                    placeholder="Tell others about yourself..."></textarea>
+                <div *ngIf="f['biography'].errors && f['biography'].touched" class="invalid-feedback">
+                  <div *ngIf="f['biography'].errors['required']">Biography is required</div>
+                  <div *ngIf="f['biography'].errors['maxlength']">Biography cannot exceed 500 characters</div>
+                </div>
+                <div class="form-text">
+                  {{ f['biography'].value?.length || 0 }}/500 characters
+                </div>
+              </div>
+              
+              <!-- Location -->
+              <div class="mb-3">
+                <label class="form-label">Location</label>
+                
+                <!-- Location error message -->
+                <app-alert *ngIf="locationError" [type]="'danger'" [message]="locationError" [dismissible]="true" (dismissed)="locationError = ''"></app-alert>
+                
+                <!-- Automatic location detection -->
+                <div class="d-grid mb-3">
+                  <button type="button" class="btn btn-outline-primary" (click)="detectLocation()">
+                    <i class="fas fa-map-marker-alt me-2"></i> Detect My Location
+                  </button>
+                </div>
+                
+                <!-- Map for manual location selection -->
+                <div *ngIf="f['latitude'].value && f['longitude'].value" class="mb-3">
+                  <app-map 
+                    [latitude]="f['latitude'].value" 
+                    [longitude]="f['longitude'].value"
+                    [editable]="true"
+                    [height]="'300px'"
+                    (locationChanged)="onLocationChanged($event)">
+                  </app-map>
+                  <div class="form-text mt-2">
+                    Click on the map to update your location
+                  </div>
+                </div>
+                
+                <div *ngIf="!f['latitude'].value || !f['longitude'].value" class="alert alert-warning">
+                  Please set your location to help us find matches near you.
+                </div>
+              </div>
+              
+              <!-- Submit button -->
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || saving">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                  Save Profile
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Interests/Tags section -->
+        <div *ngIf="!loading" class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="card-title mb-4">Interests</h3>
+            
+            <!-- Tag list -->
+            <app-tag-list 
+              [tags]="profile?.tags || []" 
+              [editable]="true"
+              [maxTags]="10"
+              (removeTag)="removeTag($event)"
+              (addTag)="addNewTag($event)">
+            </app-tag-list>
+            
+            <div class="form-text mt-1">
+              Example: travel, music, cooking
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

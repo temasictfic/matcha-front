@@ -1,0 +1,58 @@
+<div class="profile-card card h-100" (click)="viewProfile()">
+    <div class="profile-image-container">
+      <img [src]="getPrimaryPicture()" [alt]="profile.username" class="profile-image card-img-top">
+      
+      <!-- Online status indicator -->
+      <div class="online-status" [ngClass]="{'online': profile.is_online}">
+        {{ profile.is_online ? 'Online' : (profile.last_online | timeAgo) }}
+      </div>
+      
+      <!-- Distance badge -->
+      <div *ngIf="showDistance && distance !== null" class="distance-badge">
+        {{ formatDistance() }}
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <h5 class="card-title mb-0">{{ profile.first_name }}, {{ profile.last_name }}</h5>
+        <div class="fame-rating">
+          <span class="stars">
+            <span class="filled-stars" [style.width.%]="profile.fame_rating * 10"></span>
+          </span>
+        </div>
+      </div>
+      
+      <div class="username text-muted mb-2">{{ profile.username }}</div> <!-- @ var idi profileden önceki parantezlerde -->
+      
+      <p *ngIf="profile.biography" class="card-text biography">{{ profile.biography }}</p>
+      
+      <!-- Tags -->
+      <div *ngIf="profile.tags && profile.tags.length > 0" class="tags mt-2">
+        <span *ngFor="let tag of profile.tags" class="tag">
+          #{{ tag.name }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- Action buttons -->
+    <div *ngIf="showActions" class="card-footer bg-transparent border-0">
+      <div class="d-flex justify-content-between">
+        <button class="btn action-btn" [ngClass]="{'liked': hasLiked}" (click)="toggleLike($event)" title="{{ hasLiked ? 'Unlike' : 'Like' }}">
+          <fa-icon [icon]="hasLiked ? faHeartBroken : faHeart"></fa-icon>
+        </button>
+        
+        <button class="btn action-btn" (click)="blockProfile($event)" title="Block user">
+          <fa-icon [icon]="faShield"></fa-icon>
+        </button>
+        
+        <button class="btn action-btn" (click)="reportProfile($event)" title="Report user">
+          <fa-icon [icon]="faTimesCircle"></fa-icon>
+        </button>
+        
+        <button class="btn action-btn" (click)="viewProfile(); $event.stopPropagation()" title="View profile">
+          <fa-icon [icon]="faInfoCircle"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>

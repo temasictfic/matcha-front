@@ -1,0 +1,40 @@
+<div class="card-body notification-item" [ngClass]="[notificationClass, {'unread': !notification.is_read}]">
+    <div class="row">
+      <!-- Icon column -->
+      <div class="col-auto">
+        <div class="notification-icon">
+          <i class="fas" [ngClass]="notificationIcon"></i>
+        </div>
+      </div>
+      
+      <!-- Content column -->
+      <div class="col">
+        <!-- Notification content -->
+        <div class="notification-content">
+          <p class="mb-1">{{ notification.content }}</p>
+          <small class="text-muted">{{ getTimeAgo(notification.created_at) }}</small>
+        </div>
+        
+        <!-- Action buttons -->
+        <div class="mt-2" *ngIf="notification.sender_id">
+          <!-- For match and like notifications - View profile -->
+          <button *ngIf="notification.type === notificationType.MATCH || notification.type === notificationType.LIKE" 
+              class="btn btn-sm btn-outline-primary me-2" (click)="onProfileClick()">
+            View Profile
+          </button>
+          
+          <!-- For match and message notifications - Message -->
+          <button *ngIf="notification.type === notificationType.MATCH || notification.type === notificationType.MESSAGE" 
+              class="btn btn-sm btn-primary" (click)="onMessageClick()">
+            Message
+          </button>
+          
+          <!-- For visit notifications - View profile -->
+          <button *ngIf="notification.type === notificationType.VISIT" 
+              class="btn btn-sm btn-outline-primary" (click)="onProfileClick()">
+            View Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

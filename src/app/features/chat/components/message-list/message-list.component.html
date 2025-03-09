@@ -1,0 +1,36 @@
+<div class="message-list flex-grow-1 position-relative">
+    <!-- Loading overlay -->
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
+    <!-- Messages container -->
+    <div #messageContainer class="messages-container p-3">
+      <!-- Empty messages -->
+      <div *ngIf="!loading && messages.length === 0" class="text-center p-4">
+        <p class="text-muted">No messages yet. Start the conversation!</p>
+      </div>
+      
+      <!-- Messages by date -->
+      <div *ngFor="let group of groupMessagesByDate()">
+        <!-- Date separator -->
+        <div class="date-separator">
+          <span class="date-text">{{ formatDateHeader(group.date) }}</span>
+        </div>
+        
+        <!-- Messages -->
+        <div *ngFor="let message of group.messages" 
+            class="message-wrapper"
+            [class.outgoing]="isCurrentUser(message.sender_id)"
+            [class.incoming]="!isCurrentUser(message.sender_id)">
+          
+          <div class="message-bubble">
+            <div class="message-content">{{ message.content }}</div>
+            <div class="message-time">{{ formatMessageTime(message.created_at) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

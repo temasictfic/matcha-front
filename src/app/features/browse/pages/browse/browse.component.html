@@ -1,0 +1,101 @@
+<div class="browse-container">
+    <div class="browse-header mb-4">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Browse Profiles</h2>
+          
+          <div class="d-flex">
+            <!-- Sort dropdown -->
+            <div class="dropdown me-2" ngbDropdown>
+              <button class="btn btn-outline-secondary" id="sortDropdown" ngbDropdownToggle>
+                Sort by: {{ sortBy | titlecase }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="sortDropdown">
+                <button ngbDropdownItem (click)="onSortChanged('distance')">Distance</button>
+                <button ngbDropdownItem (click)="onSortChanged('fame')">Fame Rating</button>
+                <button ngbDropdownItem (click)="onSortChanged('tags')">Common Tags</button>
+                <button ngbDropdownItem (click)="onSortChanged('age')">Age</button>
+              </div>
+            </div>
+            
+            <!-- Filter button (toggles filter panel) -->
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
+              <i class="fas fa-filter me-1"></i> Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Filter offcanvas panel -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtersOffcanvas" 
+        aria-labelledby="filtersOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filter Profiles</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <app-filters [currentFilters]="filters" (filtersChanged)="onFiltersChanged($event)"></app-filters>
+      </div>
+    </div>
+    
+    <!-- Main browse content -->
+    <div class="container">
+      <!-- Loading spinner -->
+      <app-loading-spinner *ngIf="loading" [message]="'Loading profiles...'"></app-loading-spinner>
+      
+      <!-- Error message -->
+      <app-alert *ngIf="error" [type]="'danger'" [message]="error"></app-alert>
+      
+      <!-- No profiles message -->
+      <div *ngIf="!loading && profiles.length === 0" class="text-center py-5">
+        <div class="empty-state">
+          <i class="fas fa-search mb-3"></i>
+          <h3>No Profiles Found</h3>
+          <p class="text-muted">Try adjusting your filters or check back later.</p>
+        </div>
+      </div>
+      
+      <!-- Profiles grid -->
+      <div *ngIf="!loading && profiles.length > 0" class="row g-4">
+        <div *ngFor="let profile of profiles" class="col-xl-3 col-lg-4 col-md-6">
+          <app-profile-card 
+            [profile]="profile" 
+            [userLatitude]="userProfile?.latitude" 
+            [userLongitude]="userProfile?.longitude"
+            [showActions]="true"
+            [showDistance]="true"
+            (likeChanged)="onLikeChanged($event, profile.id)"
+            (profileBlocked)="onProfileBlocked(profile.id)">
+          </app-profile-card>
+        </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div *ngIf="!loading && profiles.length > 0" class="d-flex justify-content-center mt-5">
+        <nav aria-label="Browse pagination">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChanged(currentPage - 1)">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            
+            <li class="page-item" *ngFor="let page of [].constructor(round()); let i = index" 
+                [class.active]="currentPage === i + 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChanged(i + 1)">
+                {{ i + 1 }}
+              </a>
+            </li>
+            
+            <li class="page-item" [class.disabled]="currentPage === round()">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChanged(currentPage + 1)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,83 @@
+<div class="card-body">
+    <h4 class="card-title mb-4">Account Settings</h4>
+    
+    <!-- Error message -->
+    <app-alert *ngIf="error" [type]="'danger'" [message]="error" [dismissible]="true" (dismissed)="error = ''"></app-alert>
+    
+    <!-- Success message -->
+    <app-alert *ngIf="success" [type]="'success'" [message]="success" [dismissible]="true" (dismissed)="success = ''"></app-alert>
+    
+    <!-- Account form -->
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input 
+          type="text" 
+          formControlName="username" 
+          class="form-control" 
+          id="username" 
+          [ngClass]="{ 'is-invalid': f['username'].errors && f['username'].touched }"
+        />
+        <div *ngIf="f['username'].errors && f['username'].touched" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">Username is required</div>
+          <div *ngIf="f['username'].errors['pattern']">Username may only contain letters, numbers, underscores, and hyphens</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input 
+          type="email" 
+          formControlName="email" 
+          class="form-control" 
+          id="email" 
+          [ngClass]="{ 'is-invalid': f['email'].errors && f['email'].touched }"
+        />
+        <div *ngIf="f['email'].errors && f['email'].touched" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Please enter a valid email address</div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="first_name" class="form-label">First Name</label>
+          <input 
+            type="text" 
+            formControlName="first_name" 
+            class="form-control" 
+            id="first_name" 
+            [ngClass]="{ 'is-invalid': f['first_name'].errors && f['first_name'].touched }"
+          />
+          <div *ngIf="f['first_name'].errors && f['first_name'].touched" class="invalid-feedback">
+            <div *ngIf="f['first_name'].errors['required']">First name is required</div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            formControlName="last_name" 
+            class="form-control" 
+            id="last_name" 
+            [ngClass]="{ 'is-invalid': f['last_name'].errors && f['last_name'].touched }"
+          />
+          <div *ngIf="f['last_name'].errors && f['last_name'].touched" class="invalid-feedback">
+            <div *ngIf="f['last_name'].errors['required']">Last name is required</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-grid mt-4">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="accountForm.invalid || loading || !accountForm.dirty"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>

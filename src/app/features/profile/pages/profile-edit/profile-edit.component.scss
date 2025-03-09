@@ -1,0 +1,53 @@
+.profile-edit-container {
+    padding: 1rem 0;
+  }
+  
+  .card {
+    border-radius: 10px;
+    border: none;
+  }
+  
+  h3.card-title {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  // Adjust spacing between sections
+  .mb-4 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  // Improve form control appearance
+  .form-control, .form-select {
+    padding: 0.625rem 0.75rem;
+    border-color: #ddd;
+    
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+    }
+  }
+  
+  // Textarea styling
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  // Custom button styling
+  .btn-outline-primary {
+    border-color: #ddd;
+    color: #666;
+    
+    &:hover, &:focus {
+      background-color: #f0f0f0;
+      border-color: #ccc;
+      color: #333;
+    }
+  }
+  
+  // Distance formatter
+  .distance-text {
+    font-weight: 500;
+    color: var(--primary-color);
+  }

@@ -1,0 +1,34 @@
+.tag-list {
+  width: 100%;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  color: #555;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .btn-close-sm {
+    font-size: 0.5rem;
+    margin-left: 5px;
+    opacity: 0.5;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

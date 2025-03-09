@@ -1,0 +1,111 @@
+<div class="profile-pictures-container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Manage Profile Pictures</h2>
+          <button class="btn btn-outline-secondary" (click)="goBack()">Back to Profile</button>
+        </div>
+        
+        <!-- Loading spinner -->
+        <app-loading-spinner *ngIf="loading" [message]="'Loading profile pictures...'"></app-loading-spinner>
+        
+        <!-- Error message -->
+        <app-alert *ngIf="error" [type]="'danger'" [message]="error" [dismissible]="true" (dismissed)="error = ''"></app-alert>
+        
+        <!-- Success message -->
+        <app-alert *ngIf="success" [type]="'success'" [message]="success" [dismissible]="true" (dismissed)="success = ''"></app-alert>
+        
+        <!-- Pictures management -->
+        <div *ngIf="!loading" class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="card-title mb-4">Your Pictures</h3>
+            
+            <!-- Pictures grid -->
+            <div class="row">
+              <!-- Existing pictures -->
+              <div *ngFor="let picture of profile?.pictures" class="col-lg-4 col-md-6 mb-4">
+                <div class="picture-item" [ngClass]="{'primary': picture.is_primary}">
+                  <img [src]="getPictureUrl(picture)" alt="Profile picture" class="img-fluid rounded">
+                  
+                  <!-- Primary badge -->
+                  <span *ngIf="picture.is_primary" class="primary-badge">Primary</span>
+                  
+                  <!-- Actions -->
+                  <div class="picture-actions">
+                    <button *ngIf="!picture.is_primary" class="btn btn-sm btn-primary me-2" 
+                        (click)="setPrimaryPicture(picture.id)">
+                      Set as Primary
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="deletePicture(picture.id)">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Upload new picture -->
+              <div *ngIf="profile?.pictures" class="col-lg-4 col-md-6 mb-4"> <!-- && profile?.pictures.length < 5 -->
+                <div class="picture-upload">
+                  <input type="file" id="picture-upload" accept="image/*" class="d-none" (change)="onFileSelected($event)">
+                  <label for="picture-upload" class="upload-label">
+                    <div class="upload-icon">+</div>
+                    <div>Add Picture</div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Picture count info -->
+            <div class="picture-count mt-2">
+              {{ profile?.pictures?.length || 0 }}/5 pictures uploaded
+            </div>
+            
+            <!-- Preview and upload -->
+            <div *ngIf="imagePreview" class="mt-4">
+              <h4 class="mb-3">Preview</h4>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="preview-container mb-3">
+                    <img [src]="imagePreview" alt="Preview" class="img-fluid rounded">
+                  </div>
+                </div>
+                
+                <div class="col-md-6 d-flex align-items-center">
+                  <div class="w-100">
+                    <div class="mb-3" *ngIf="selectedFile">
+                      <strong>File:</strong> {{ selectedFile.name }}<br>
+                      <strong>Size:</strong> {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-primary" (click)="uploadPicture(true)" [disabled]="uploading">
+                        <span *ngIf="uploading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                        Upload as Primary
+                      </button>
+                      <button class="btn btn-outline-primary" (click)="uploadPicture(false)" [disabled]="uploading">
+                        <span *ngIf="uploading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                        Upload as Additional Picture
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Help text -->
+            <div class="alert alert-info mt-4">
+              <h5>Picture Guidelines</h5>
+              <ul class="mb-0">
+                <li>You can upload up to 5 pictures</li>
+                <li>Maximum file size: 5MB</li>
+                <li>Supported formats: JPEG, PNG, GIF</li>
+                <li>Your primary picture is the first one people see</li>
+                <li>Clear photos of yourself perform better</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

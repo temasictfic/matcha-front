@@ -1,0 +1,199 @@
+<div class="profile-detail-container">
+    <!-- Back button -->
+    <div class="container mb-4">
+      <button class="btn btn-outline-secondary" (click)="goBack()">
+        <i class="fas fa-arrow-left me-2"></i> Back to Browse
+      </button>
+    </div>
+    
+    <!-- Loading spinner -->
+    <app-loading-spinner *ngIf="loading" [message]="'Loading profile...'"></app-loading-spinner>
+    
+    <!-- Error message -->
+    <app-alert *ngIf="error" [type]="'danger'" [message]="error"></app-alert>
+    
+    <!-- Profile content -->
+    <div *ngIf="profile && !loading" class="container">
+      <div class="row">
+        <!-- Left column (Profile pictures) -->
+        <div class="col-lg-6 mb-4">
+          <div class="profile-gallery card">
+            <!-- Main image -->
+            <div class="main-image-container">
+              <img [src]="getCurrentImageUrl()" [alt]="profile.username" class="main-image">
+              
+              <!-- Navigation buttons -->
+              <button *ngIf="profile.pictures && profile.pictures.length > 1" 
+                  class="btn nav-btn prev-btn" (click)="prevImage()">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button *ngIf="profile.pictures && profile.pictures.length > 1" 
+                  class="btn nav-btn next-btn" (click)="nextImage()">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            
+            <!-- Thumbnail navigation -->
+            <div *ngIf="profile.pictures && profile.pictures.length > 1" class="thumbnail-container">
+              <div *ngFor="let picture of profile.pictures; let i = index" 
+                  class="thumbnail" 
+                  [class.active]="i === activeImageIndex"
+                  (click)="setActiveImage(i)">
+                <img [src]="picture.file_path" [alt]="'Photo ' + (i + 1)">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right column (Profile details) -->
+        <div class="col-lg-6">
+          <div class="profile-info card mb-4">
+            <div class="card-body">
+              <!-- Profile header with actions -->
+              <div class="profile-header d-flex justify-content-between align-items-start mb-4">
+                <div>
+                  <h2 class="mb-0">{{ profile.first_name }} {{ profile.last_name }}</h2>
+                  <p class="text-muted">{{ profile.username }}</p>  <!-- @ profilenden önceki parantezlerden önce -->
+                </div>
+                
+                <div class="action-buttons">
+                  <button class="btn action-btn me-2" [ngClass]="{'liked': hasLiked}" 
+                      (click)="toggleLike()" title="{{ hasLiked ? 'Unlike' : 'Like' }}">
+                    <i class="fas" [ngClass]="hasLiked ? 'fa-heart-broken' : 'fa-heart'"></i>
+                  </button>
+                  
+                  <button class="btn action-btn me-2" (click)="blockProfile()" title="Block user">
+                    <i class="fas fa-shield-alt"></i>
+                  </button>
+                  
+                  <button class="btn action-btn" (click)="openReportModal()" title="Report user">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Online status and distance -->
+              <div class="d-flex mb-4">
+                <div class="me-4">
+                  <span class="status-indicator" [ngClass]="{'online': profile.is_online}"></span>
+                  {{ profile.is_online ? 'Online' : 'Last seen ' + (profile.last_online | timeAgo) }}
+                </div>
+                
+                <div *ngIf="distance !== null">
+                  <i class="fas fa-map-marker-alt me-1"></i>
+                  {{ formatDistance() }} away
+                </div>
+              </div>
+              
+              <!-- Profile information -->
+              <div class="profile-attributes mb-4">
+                <div class="row">
+                  <div class="col-6 mb-3" *ngIf="profile.gender">
+                    <h6>Gender</h6>
+                    <p>{{ profile.gender | titlecase }}</p>
+                  </div>
+                  
+                  <div class="col-6 mb-3" *ngIf="profile.sexual_preference">
+                    <h6>Preference</h6>
+                    <p>{{ profile.sexual_preference | titlecase }}</p>
+                  </div>
+                  
+                  <div class="col-12 mb-3">
+                    <h6>Fame Rating</h6>
+                    <div class="rating-stars">
+                      <span class="stars">
+                        <span class="filled-stars" [style.width.%]="profile.fame_rating * 10"></span>
+                      </span>
+                      <span class="rating-text ms-2">{{ profile.fame_rating.toFixed(1) }} / 10</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Biography -->
+              <div class="mb-4" *ngIf="profile.biography">
+                <h5>About Me</h5>
+                <p class="biography">{{ profile.biography }}</p>
+              </div>
+              
+              <!-- Interests -->
+              <div class="mb-4" *ngIf="profile.tags && profile.tags.length > 0">
+                <h5>Interests</h5>
+                <div class="tags-container">
+                  <span *ngFor="let tag of profile.tags" class="tag">
+                    #{{ tag.name }}
+                  </span>
+                </div>
+              </div>
+              
+              <!-- Match & chat buttons -->
+              <div class="mt-5">
+                <div *ngIf="isMatch" class="match-badge mb-3">
+                  <i class="fas fa-check-circle me-2"></i> It's a Match!
+                </div>
+                
+                <div class="d-grid gap-2">
+                  <button *ngIf="isMatch" class="btn btn-primary" (click)="startChat()">
+                    <i class="fas fa-comment me-2"></i> Start Conversation
+                  </button>
+                  
+                  <button *ngIf="!isMatch && !hasLiked" class="btn btn-primary" (click)="toggleLike()">
+                    <i class="fas fa-heart me-2"></i> Like Profile
+                  </button>
+                  
+                  <button *ngIf="!isMatch && hasLiked" class="btn btn-outline-primary" (click)="toggleLike()">
+                    <i class="fas fa-heart-broken me-2"></i> Unlike Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Location map -->
+          <div *ngIf="profile.latitude && profile.longitude" class="card">
+            <div class="card-body">
+              <h5 class="card-title mb-3">Location</h5>
+              <app-map 
+                [latitude]="profile.latitude" 
+                [longitude]="profile.longitude"
+                [height]="'250px'"
+                [editable]="false">
+              </app-map>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Report Modal -->
+    <div class="modal" [class.show]="showReportModal" [style.display]="showReportModal ? 'block' : 'none'"
+        tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportModalLabel">Report User</h5>
+            <button type="button" class="btn-close" (click)="closeReportModal()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Please tell us why you're reporting this user:</p>
+            
+            <div class="form-group">
+              <textarea class="form-control" rows="4" [(ngModel)]="reportReason" 
+                  placeholder="Explain the reason for reporting..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeReportModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" [disabled]="!reportReason.trim() || reporting" 
+                (click)="submitReport()">
+              <span *ngIf="reporting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              Submit Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal Backdrop -->
+    <div *ngIf="showReportModal" class="modal-backdrop fade show"></div>
+  </div>

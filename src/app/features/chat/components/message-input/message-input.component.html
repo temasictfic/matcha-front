@@ -1,0 +1,20 @@
+<div class="message-input p-3 border-top">
+    <div class="input-group">
+      <textarea 
+        class="form-control" 
+        [formControl]="messageControl"
+        placeholder="Type a message..."
+        rows="1"
+        (keydown)="onKeyDown($event)"></textarea>
+      <button 
+        class="btn btn-primary" 
+        type="button"
+        [disabled]="!messageControl.value?.trim()"
+        (click)="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+    <div class="form-text small text-muted">
+      Press Enter to send, Shift+Enter for new line
+    </div>
+  </div>

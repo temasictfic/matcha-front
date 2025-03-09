@@ -1,0 +1,54 @@
+@use '../../../../../styles.scss' as *;
+
+.filters-container {
+    padding: 0.5rem;
+  }
+  
+  .filter-section {
+    margin-bottom: 1.5rem;
+    
+    h5 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+  }
+  
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    
+    &:hover {
+      background-color: #e0e0e0;
+    }
+    
+    &.selected {
+      background-color: var(--primary-color);
+      color: white;
+      
+      &:hover {
+        background-color: $primary-dark;
+      }
+    }
+  }
+  
+  .action-buttons {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }

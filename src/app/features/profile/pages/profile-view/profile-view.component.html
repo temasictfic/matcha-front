@@ -1,0 +1,121 @@
+<div class="profile-container">
+    <!-- Loading spinner -->
+    <app-loading-spinner *ngIf="loading" [message]="'Loading profile...'"></app-loading-spinner>
+    
+    <!-- Error message -->
+    <app-alert *ngIf="error" [type]="'danger'" [message]="error"></app-alert>
+    
+    <!-- Profile content -->
+    <div *ngIf="profile && user && !loading" class="row">
+      
+      <!-- Left column (Profile picture and basic info) -->
+      <div class="col-lg-4 mb-4">
+        <div class="card profile-card">
+          <div class="card-body text-center">
+            <!-- Profile picture -->
+            <div class="profile-picture-container mb-3">
+              <img [src]="getPrimaryPictureUrl()" alt="Profile picture" class="profile-picture rounded-circle">
+            </div>
+            
+            <!-- Username and name -->
+            <h3 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h3>
+            <p class="text-muted mb-3">{{ user.username }}</p>  <!--  @ var userdan önceki parantezlerin önünde -->
+            
+            <!-- Profile completion -->
+            <div class="profile-completion mb-3">
+              <p class="mb-1">Profile Completion: {{ getProfileCompletionStatus() }}</p>
+              <div class="progress">
+                <div class="progress-bar bg-primary" role="progressbar" 
+                    [style.width.%]="getProfileCompletionPercentage()" 
+                    [attr.aria-valuenow]="getProfileCompletionPercentage()" 
+                    aria-valuemin="0" aria-valuemax="100">
+                  {{ getProfileCompletionPercentage() }}%
+                </div>
+              </div>
+            </div>
+            
+            <!-- Edit buttons -->
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" (click)="editProfile()">
+                Edit Profile
+              </button>
+              <button class="btn btn-outline-primary" (click)="editPictures()">
+                Manage Pictures
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right column (Profile details) -->
+      <div class="col-lg-8">
+        <div class="card profile-details-card mb-4">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Profile Information</h4>
+            
+            <!-- No data message -->
+            <div *ngIf="!profile.gender && !profile.sexual_preference && !profile.biography" class="text-center py-4">
+              <p class="text-muted">No profile information provided yet.</p>
+              <button class="btn btn-primary" (click)="editProfile()">
+                Complete Your Profile
+              </button>
+            </div>
+            
+            <!-- Profile details -->
+            <dl class="profile-details">
+              <dt *ngIf="profile.gender">Gender</dt>
+              <dd *ngIf="profile.gender">{{ profile.gender }}</dd>
+              
+              <dt *ngIf="profile.sexual_preference">Sexual Preference</dt>
+              <dd *ngIf="profile.sexual_preference">{{ profile.sexual_preference }}</dd>
+              
+              <dt *ngIf="profile.biography">About Me</dt>
+              <dd *ngIf="profile.biography">{{ profile.biography }}</dd>
+              
+              <dt>Fame Rating</dt>
+              <dd>
+                <div class="rating-stars">
+                  <span class="stars">
+                    <span class="filled-stars" [style.width.%]="profile.fame_rating * 10"></span>
+                  </span>
+                  <span class="rating-text ms-2">{{ profile.fame_rating.toFixed(1) }} / 10</span>
+                </div>
+              </dd>
+              
+              <dt *ngIf="profile.latitude && profile.longitude">Location</dt>
+              <dd *ngIf="profile.latitude && profile.longitude">
+                <app-map 
+                  [latitude]="profile.latitude" 
+                  [longitude]="profile.longitude"
+                  [height]="'200px'"
+                  [editable]="false">
+                </app-map>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        
+        <!-- Interests/Tags -->
+        <div class="card profile-tags-card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Interests</h4>
+            
+            <!-- No tags message -->
+            <div *ngIf="!profile.tags || profile.tags.length === 0" class="text-center py-4">
+              <p class="text-muted">No interests added yet.</p>
+              <button class="btn btn-primary" (click)="editProfile()">
+                Add Your Interests
+              </button>
+            </div>
+            
+            <!-- Tag list -->
+            <app-tag-list *ngIf="profile.tags && profile.tags.length > 0" 
+                [tags]="profile.tags" 
+                [editable]="false" 
+                [tagClass]="'interest-tag'">
+            </app-tag-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,78 @@
+<div class="filters-container">
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+      <!-- Age range filter -->
+      <div class="filter-section">
+        <h5>Age Range</h5>
+        <div class="row g-2">
+          <div class="col-6">
+            <label for="minAge" class="form-label">Min Age</label>
+            <input type="number" class="form-control" id="minAge" formControlName="minAge" min="18" max="99">
+          </div>
+          <div class="col-6">
+            <label for="maxAge" class="form-label">Max Age</label>
+            <input type="number" class="form-control" id="maxAge" formControlName="maxAge" min="18" max="99">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Fame rating filter -->
+      <div class="filter-section">
+        <h5>Fame Rating</h5>
+        <div class="row g-2">
+          <div class="col-6">
+            <label for="minFame" class="form-label">Min Rating</label>
+            <input type="number" class="form-control" id="minFame" formControlName="minFame" min="0" max="10" step="0.1">
+          </div>
+          <div class="col-6">
+            <label for="maxFame" class="form-label">Max Rating</label>
+            <input type="number" class="form-control" id="maxFame" formControlName="maxFame" min="0" max="10" step="0.1">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Distance filter -->
+      <div class="filter-section">
+        <h5>Distance</h5>
+        <div class="mb-3">
+          <label for="maxDistance" class="form-label">Maximum Distance (km)</label>
+          <input type="number" class="form-control" id="maxDistance" formControlName="maxDistance" min="1" placeholder="No limit">
+        </div>
+      </div>
+      
+      <!-- Tags filter -->
+      <div class="filter-section">
+        <h5>Interests</h5>
+        
+        <!-- Loading state -->
+        <div *ngIf="loading" class="text-center py-3">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="ms-2">Loading interests...</span>
+        </div>
+        
+        <!-- No tags message -->
+        <div *ngIf="!loading && userTags.length === 0" class="alert alert-info">
+          <small>
+            Add interests to your profile to filter matches by common interests.
+          </small>
+        </div>
+        
+        <!-- Tags list -->
+        <div *ngIf="!loading && userTags.length > 0" class="tags-container">
+          <div *ngFor="let tag of userTags" 
+              class="tag" 
+              [class.selected]="isTagSelected(tag.name)"
+              (click)="toggleTag(tag.name)">
+            #{{ tag.name }}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Action buttons -->
+      <div class="action-buttons mt-4">
+        <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
+        <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset Filters</button>
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,54 @@
+<div class="profile-pictures">
+  <!-- Display existing pictures -->
+  <div class="pictures-container">
+    <div *ngFor="let picture of pictures" class="picture-item">
+      <div class="picture-wrapper" [ngClass]="{'primary': picture.is_primary}">
+        <img [src]="getPictureUrl(picture)" alt="Profile picture" class="profile-image">
+        
+        <div *ngIf="editable" class="picture-actions">
+          <button *ngIf="!picture.is_primary" class="btn btn-sm btn-primary me-1" 
+              (click)="onSetPrimary(picture.id, $event)" title="Set as primary">
+            Primary
+          </button>
+          <button class="btn btn-sm btn-danger" 
+              (click)="onDeletePicture(picture.id, $event)" title="Delete picture">
+            Delete
+          </button>
+        </div>
+        
+        <div *ngIf="picture.is_primary" class="primary-badge">
+          Primary
+        </div>
+      </div>
+    </div>
+    
+    <!-- Placeholder for adding new picture -->
+    <div *ngIf="editable && pictures.length < maxPictures" class="picture-item">
+      <div class="picture-upload">
+        <input type="file" id="picture-upload" accept="image/*" class="d-none"
+            (change)="onFileSelected($event)">
+        <label for="picture-upload" class="upload-label">
+          <div class="upload-icon">+</div>
+          <div>Add Picture</div>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- File upload controls -->
+  <div *ngIf="editable && selectedFile" class="mt-3">
+    <div class="alert alert-info">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>Selected file: <strong>{{ selectedFile.name }}</strong></div>
+        <button class="btn btn-primary btn-sm" (click)="uploadFile()">
+          Upload
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Picture count info -->
+  <div *ngIf="editable" class="mt-2 small text-muted">
+    {{ pictures.length }}/{{ maxPictures }} pictures added.
+  </div>
+</div>

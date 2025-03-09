@@ -1,0 +1,135 @@
+<div class="home-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">Find Your Perfect Match</h1>
+            <p class="lead mb-4">
+              Matcha connects you with like-minded individuals based on your preferences, interests, and location.
+            </p>
+            <div class="hero-buttons">
+              <button *ngIf="!(isAuthenticated$ | async)" class="btn btn-primary btn-lg me-3" (click)="navigateToRegister()">
+                Get Started
+              </button>
+              <button *ngIf="isAuthenticated$ | async" class="btn btn-primary btn-lg me-3" (click)="navigateToBrowse()">
+                Start Browsing
+              </button>
+              <a *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/login" class="btn btn-outline-primary btn-lg">
+                Sign In
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-5 mt-lg-0">
+            <img src="images/ideogram.jpeg" alt="Matcha Dating App" class="img-fluid rounded shadow-lg">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Why Choose Matcha?</h2>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="feature-card card h-100">
+              <div class="card-body text-center">
+                <div class="feature-icon mb-3">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="card-title">Smart Matching</h3>
+                <p class="card-text">
+                  Our algorithm matches you with people who share your interests and preferences.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="feature-card card h-100">
+              <div class="card-body text-center">
+                <div class="feature-icon mb-3">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="card-title">Location-Based</h3>
+                <p class="card-text">
+                  Find matches near you to make meeting up easier and more convenient.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="feature-card card h-100">
+              <div class="card-body text-center">
+                <div class="feature-icon mb-3">
+                  <i class="fas fa-comment"></i>
+                </div>
+                <h3 class="card-title">Real-time Chat</h3>
+                <p class="card-text">
+                  Connect with your matches through our real-time messaging system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="how-it-works-section">
+      <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="step-card text-center">
+              <div class="step-number">1</div>
+              <h4>Create Profile</h4>
+              <p>Sign up and complete your profile with photos and interests.</p>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="step-card text-center">
+              <div class="step-number">2</div>
+              <h4>Discover Matches</h4>
+              <p>Browse profiles tailored to your preferences and location.</p>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <div class="step-card text-center">
+              <div class="step-number">3</div>
+              <h4>Connect</h4>
+              <p>Like profiles and connect when the feeling is mutual.</p>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-md-6">
+            <div class="step-card text-center">
+              <div class="step-number">4</div>
+              <h4>Chat</h4>
+              <p>Message your matches and start your journey together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container text-center">
+        <h2 class="mb-4">Ready to Find Your Match?</h2>
+        <p class="mb-4">Join thousands of singles who've already found meaningful connections on Matcha.</p>
+        <button *ngIf="!(isAuthenticated$ | async)" class="btn btn-primary btn-lg" (click)="navigateToRegister()">
+          Create Your Account
+        </button>
+        <button *ngIf="isAuthenticated$ | async" class="btn btn-primary btn-lg" (click)="navigateToBrowse()">
+          Start Browsing
+        </button>
+      </div>
+    </section>
+  </div>

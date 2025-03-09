@@ -1,0 +1,54 @@
+.notification-item {
+    transition: background-color 0.2s ease;
+    
+    &.unread {
+      background-color: #f0f9ff;
+      
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: var(--primary-color);
+      }
+    }
+  }
+  
+  .notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    
+    .like-notification & {
+      background-color: #ff6b6b;
+    }
+    
+    .match-notification & {
+      background-color: #4ecdc4;
+    }
+    
+    .visit-notification & {
+      background-color: #6b9fff;
+    }
+    
+    .message-notification & {
+      background-color: #9b59b6;
+    }
+    
+    .unmatch-notification & {
+      background-color: #95a5a6;
+    }
+  }
+  
+  .notification-content {
+    p {
+      margin-bottom: 0.25rem;
+    }
+  }

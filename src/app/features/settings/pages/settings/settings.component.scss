@@ -1,0 +1,40 @@
+.settings-container {
+    padding-bottom: 2rem;
+  }
+  
+  .settings-header {
+    background-color: #f8f9fa;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+    margin-top: -2rem; // Offset page container padding
+  }
+  
+  .settings-nav {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    .list-group-item {
+      border-left: 4px solid transparent;
+      padding: 1rem 1.25rem;
+      
+      &.active {
+        background-color: #f8f9fa;
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+        font-weight: 600;
+      }
+      
+      &:hover:not(.active) {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+  
+  .settings-content {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }

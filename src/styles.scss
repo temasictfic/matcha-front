@@ -1,1 +1,170 @@
 /* You can add global styles to this file, and also import other style files */
+@use "sass:color";
+
+// Colors
+$primary: #ff6b6b;
+$primary-dark: color.adjust($primary, $lightness: -10%);
+$primary-light: color.adjust($primary, $lightness: 20%);
+$secondary: #4ecdc4;
+$secondary-dark: color.adjust($secondary, $lightness: -10%);
+$dark: #292f36;
+$light: #f7fff7;
+$danger: #ff6b6b;
+$success: #4ecdc4;
+$warning: #ffe66d;
+$info: #6b9fff;
+$gray-light: #f0f0f0;
+$gray-medium: #e0e0e0;
+
+:root {
+    --primary-color: #{$primary};
+    --secondary-color: #{$secondary};
+    --dark-color: #{$dark};
+    --light-color: #{$light};
+    --danger-color: #{$danger};
+    --success-color: #{$success};
+    --warning-color: #{$warning};
+    --info-color: #{$info};
+}
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    color: var(--dark-color);
+    min-height: 100vh;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    
+    &:hover, &:focus {
+      background-color: $primary-dark;
+      border-color: $primary-dark;
+    }
+  }
+  
+  .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    
+    &:hover, &:focus {
+      background-color: $secondary-dark;
+      border-color: $secondary-dark;
+    }
+  }
+  
+  .page-container {
+    padding: 2rem 0;
+  }
+  
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: none;
+    overflow: hidden;
+  }
+  
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+  
+  .bg-primary {
+    background-color: var(--primary-color) !important;
+  }
+  
+  // Custom scrollbar
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
+  
+  // Form styles
+  .form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 10px 15px;
+    
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+    }
+  }
+  
+  .invalid-feedback {
+    color: var(--danger-color);
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  // Animation
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  // Utility classes
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .rounded-circle {
+    border-radius: 50%;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  
+  .avatar-lg {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .avatar-xl {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .online-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: var(--danger-color);
+    color: white;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+  }

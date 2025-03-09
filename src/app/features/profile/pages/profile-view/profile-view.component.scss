@@ -1,0 +1,93 @@
+@use '../../../../../styles' as *;
+
+.profile-container {
+    padding: 1rem 0;
+  }
+  
+  .profile-card, .profile-details-card, .profile-tags-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    overflow: hidden;
+  }
+  
+  .profile-picture-container {
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  .profile-details {
+    dt {
+      font-weight: 600;
+      margin-top: 1rem;
+      color: #555;
+    }
+    
+    dd {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+      
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  .interest-tag {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    
+    &:hover {
+      background-color:$primary-dark;
+    }
+  }
+  
+  .rating-stars {
+    display: flex;
+    align-items: center;
+    
+    .stars {
+      display: inline-block;
+      position: relative;
+      width: 100px;
+      height: 20px;
+      background: url('/images/star-empty.png') 0 0 no-repeat;
+      background-size: 100px 20px;
+      
+      .filled-stars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: url('/images/star-filled.png') 0 0 no-repeat;
+        background-size: 100px 20px;
+      }
+    }
+    
+    .rating-text {
+      font-weight: 500;
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 991.98px) {
+    .profile-card {
+      margin-bottom: 1.5rem;
+    }
+  }
