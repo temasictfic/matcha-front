@@ -10,7 +10,7 @@ import { faUser, faHeart, faComments, faBell, faSignOutAlt, faCog } from '@forta
   selector: 'app-header',
   standalone: false,
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   // FontAwesome icons
@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
   currentUser$: Observable<User | null>;
   unreadNotifications: number = 0;
   unreadMessages: number = 0;
+  isMenuCollapsed = true;
 
   constructor(
     private authService: AuthService,

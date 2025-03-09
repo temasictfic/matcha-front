@@ -14,12 +14,15 @@ import { LocationService } from './services/location.service';
 import { AuthGuard } from './guards/auth.guard';
 import { ProfileCompleteGuard } from './guards/profile-complete.guard';
 import { HttpClient } from '@angular/common/http';
+import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgbCollapseModule,
+    NgbDropdownModule,
   ],
   providers: [
     AuthService,
