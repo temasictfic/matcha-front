@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   error = '';
   returnUrl = '';
+  sessionExpiredMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Get return URL from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    
+    // Check if there's a session expired message
+    this.sessionExpiredMessage = this.route.snapshot.queryParams['message'] || '';
+    if (this.sessionExpiredMessage) {
+      this.error = this.sessionExpiredMessage;
+    }
   }
 
   // Getter for easy access to form fields
